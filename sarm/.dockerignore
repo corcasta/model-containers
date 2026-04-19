@@ -1,0 +1,7 @@
+.env
+.venv
+.gitignore
+outputs
+params.txt
+README.md
+train.sh

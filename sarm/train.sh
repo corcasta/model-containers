@@ -1,0 +1,17 @@
+lerobot-train \
+  --dataset.repo_id=mkohegyi/corkinbox100 \
+  --policy.type=sarm \
+  --policy.device=cuda \
+  --policy.n_obs_steps=8 \
+  --policy.frame_gap=30 \
+  --policy.annotation_mode=single_stage \
+  --policy.image_key=observation.images.context \
+  --policy.push_to_hub=true \
+  --policy.repo_id=corcastaQ/oscar-sarm-test \
+  --output_dir=outputs/train/sarm_single \
+  --batch_size=1 \
+  --steps=5000 \
+  --save_checkpoint=true \
+  --save_freq=250 \
+  --wandb.enable=true \
+  --wandb.project=sarm
