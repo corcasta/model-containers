@@ -1,0 +1,22 @@
+lerobot-train \
+  --dataset.repo_id=mkohegyi/corkinbox100 \
+  --policy.repo_id=corcastaQ/oscar-pi05-test \
+  --policy.pretrained_path=lerobot/pi05_base \
+  --policy.type=pi05 \
+  --policy.device=cuda \
+  --policy.n_obs_steps=10 \
+  --policy.n_action_steps=30 \
+  --policy.use_relative_actions=false \
+  --policy.freeze_vision_encoder=false \
+  --policy.train_expert_only=false \
+  --policy.push_to_hub=true \
+  --rename_map='{"observation.images.context": "observation.images.context", "observation.images.wrist": "observation.images.wrist"}' \
+  --policy.empty_cameras=1 \
+  --batch_size=1 \
+  --steps=5000 \
+  --save_checkpoint=true \
+  --save_freq=250 \
+  --wandb.enable=true \
+  --wandb.project=pi05 \
+  --output_dir=outputs/train/pi05_trained \
+
