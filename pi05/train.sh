@@ -10,7 +10,7 @@ lerobot-train \
   --policy.freeze_vision_encoder=false \
   --policy.train_expert_only=false \
   --policy.push_to_hub=true \
-  --rename_map='{"observation.images.context": "observation.images.context", "observation.images.wrist": "observation.images.wrist"}' \
+  --rename_map='{"observation.images.context": "observation.images.base_0_rgb", "observation.images.wrist": "left_wrist_0_rgb"}' \
   --policy.empty_cameras=1 \
   --batch_size=1 \
   --steps=5000 \
@@ -18,5 +18,5 @@ lerobot-train \
   --save_freq=250 \
   --wandb.enable=true \
   --wandb.project=pi05 \
-  --output_dir=outputs/train/pi05_trained \
+  --output_dir=outputs/train/pi05_trained
 

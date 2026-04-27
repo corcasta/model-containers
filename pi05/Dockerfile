@@ -15,7 +15,7 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | sh \
     && . .venv/bin/activate \
     && uv pip install 'lerobot[dataset]' 'lerobot[training]' \
     && cd lerobot \
-    && uv pip install -e ".[sarm]"
+    && uv pip install -e ".[pi]"
 
 RUN echo 'source /work/.venv/bin/activate' >> /root/.bashrc \
     && chmod +x setup.sh
