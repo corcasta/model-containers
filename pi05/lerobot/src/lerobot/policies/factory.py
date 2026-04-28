@@ -518,6 +518,11 @@ def make_policy(
         #   "observation.images.context": "observation.images.base_0_rgb", 
         #   "observation.images.wrist": "observation.images.left_wrist_0_rgb"
         #  }'
+        # This also prevents in modeling_pi05.py/_preprocess_images
+        # A proper population for missing_img_keys list as otherwise
+        # by combining the argument --rename_map and --policy.empty_cameras
+        # would fill it with the original dataset keys plus the ones adde by the empty_cameras.
+        # when it only needs to be filled by empty_cameras.
         for dataset_input_feature, policy_input_feature in rename_map.items():
             cfg.input_features[policy_input_feature] = cfg.input_features.pop(dataset_input_feature)            
 
