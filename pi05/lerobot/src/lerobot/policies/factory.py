@@ -506,26 +506,21 @@ def make_policy(
 
     cfg.output_features = {key: ft for key, ft in features.items() if ft.type is FeatureType.ACTION}
     if not cfg.input_features:
-        cfg.input_features = {key: ft for key, ft in features.items() if key not in cfg.output_features}
-
-    # OSCAR-DEBUG
-    if rename_map:
-        # This is needed as when passing rename_map the batch gets created using the
-        # fields from the target policy with the content from the dataset specified keys.
-        # But the policy gets loaded with the dataset input features and we need to renamed them
-        # back to the policy.
-        # E.g. --rename_map='{
-        #   "observation.images.context": "observation.images.base_0_rgb", 
-        #   "observation.images.wrist": "observation.images.left_wrist_0_rgb"
-        #  }'
-        # This also prevents in modeling_pi05.py/_preprocess_images
-        # A proper population for missing_img_keys list as otherwise
-        # by combining the argument --rename_map and --policy.empty_cameras
-        # would fill it with the original dataset keys plus the ones adde by the empty_cameras.
-        # when it only needs to be filled by empty_cameras.
-        for dataset_input_feature, policy_input_feature in rename_map.items():
-            cfg.input_features[policy_input_feature] = cfg.input_features.pop(dataset_input_feature)            
-
+        cfg.input_features = {}
+        for key, ft in features.items():
+            if key not in cfg.output_features:
+                # This is the new addition when rename_map is passed
+                # it makes sure to keep SAME input_feature ORDER as
+                # what is define in the policy config.json since the batch
+                # contains the policy input_features key names instead of the dataset
+                # when using rename_map, we need to rename also the input_features here, to keep the ones from
+                # before the policy object is created so that keeps the key names from 
+                # the policy instead of the dataset.
+                if rename_map.get(key, None) and ft.type is FeatureType.VISUAL:
+                    new_key_name = rename_map[key]
+                    cfg.input_features[new_key_name] = ft
+                else:
+                    cfg.input_features[key] = ft
 
     # Store action feature names for relative_exclude_joints support
     if ds_meta is not None and hasattr(cfg, "action_feature_names"):
