@@ -1,22 +1,21 @@
 lerobot-train \
-  --dataset.repo_id=mkohegyi/corkinbox100 \
-  --policy.repo_id=corcastaQ/oscar-pi05-test \
+  --dataset.repo_id=corcastaQ/corkinbox100_curated_relative \
+  --policy.repo_id=corcastaQ/oscar-pi05-cork-test \
   --policy.pretrained_path=lerobot/pi05_base \
   --policy.type=pi05 \
   --policy.device=cuda \
-  --policy.n_obs_steps=10 \
+  --policy.n_obs_steps=30 \
   --policy.n_action_steps=30 \
-  --policy.use_relative_actions=false \
+  --policy.use_relative_actions=true \
   --policy.freeze_vision_encoder=false \
   --policy.train_expert_only=false \
   --policy.push_to_hub=true \
-  --rename_map='{"observation.images.context": "observation.images.base_0_rgb", "observation.images.wrist": "left_wrist_0_rgb"}' \
+  --rename_map='{"observation.images.wrist": "observation.images.left_wrist_0_rgb", "observation.images.context": "observation.images.base_0_rgb"}' \
   --policy.empty_cameras=1 \
-  --batch_size=1 \
-  --steps=5000 \
+  --batch_size=32 \
+  --steps=15000 \
   --save_checkpoint=true \
-  --save_freq=250 \
+  --save_freq=500 \
   --wandb.enable=true \
-  --wandb.project=pi05 \
-  --output_dir=outputs/train/pi05_trained
-
+  --wandb.project=pi05-cork \
+  --output_dir=outputs/train/pi05_trained > debug.txt
