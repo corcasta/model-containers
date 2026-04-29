@@ -304,6 +304,8 @@ def train(cfg: TrainPipelineConfig, accelerator: "Accelerator | None" = None):
                 "norm_map": policy.config.normalization_mapping,
             },
         }
+    elif cfg.rename_map:
+        processor_kwargs["rename_map"] = cfg.rename_map
 
     preprocessor, postprocessor = make_pre_post_processors(
         policy_cfg=cfg.policy,
@@ -434,6 +436,7 @@ def train(cfg: TrainPipelineConfig, accelerator: "Accelerator | None" = None):
         start_time = time.perf_counter()
         batch = next(dl_iter)
         batch = preprocessor(batch)
+        print(f"batch={batch.keys()}")
         train_tracker.dataloading_s = time.perf_counter() - start_time
 
         train_tracker, output_dict = update_policy(

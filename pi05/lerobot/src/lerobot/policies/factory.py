@@ -236,7 +236,7 @@ class ProcessorConfigKwargs(TypedDict, total=False):
     preprocessor_overrides: dict[str, Any] | None
     postprocessor_overrides: dict[str, Any] | None
     dataset_stats: dict[str, dict[str, torch.Tensor]] | None
-
+    rename_map: dict[str, str] | None
     
 def make_pre_post_processors(
     policy_cfg: PreTrainedConfig,
@@ -368,6 +368,7 @@ def make_pre_post_processors(
         processors = make_pi05_pre_post_processors(
             config=policy_cfg,
             dataset_stats=kwargs.get("dataset_stats"),
+            rename_map=kwargs.get("rename_map") or {}
         )
 
     elif isinstance(policy_cfg, SACConfig):
