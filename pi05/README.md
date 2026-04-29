@@ -4,8 +4,8 @@
 
 This repo vendors a copy of [`lerobot`](./lerobot) version **0.5.2**, with local modifications on top of upstream commit `bd74f673` (`chore: bump doc-builder SHA for PR upload workflow (#3386)`). The following files have been modified relative to that commit:
 
-- `lerobot/src/lerobot/datasets/utils.py`
-- `lerobot/src/lerobot/policies/sarm/processor_sarm.py`
+- `lerobot/src/lerobot/policies/factory.py` line 511-522
+
 
 ## Prerequisites
 This will only be used WHILE running the container.
@@ -33,21 +33,25 @@ Before running, you can edit `train.sh` to adjust training parameters (dataset, 
 ```bash
 lerobot-train \
   --dataset.repo_id=mkohegyi/corkinbox100 \
-  --policy.type=sarm \
+  --policy.repo_id=corcastaQ/oscar-pi05-test \
+  --policy.pretrained_path=lerobot/pi05_base \
+  --policy.type=pi05 \
   --policy.device=cuda \
-  --policy.n_obs_steps=8 \
-  --policy.frame_gap=30 \
-  --policy.annotation_mode=single_stage \
-  --policy.image_key=observation.images.context \
+  --policy.n_obs_steps=10 \
+  --policy.n_action_steps=30 \
+  --policy.use_relative_actions=false \
+  --policy.freeze_vision_encoder=false \
+  --policy.train_expert_only=false \
   --policy.push_to_hub=true \
-  --policy.repo_id=corcastaQ/oscar-sarm-test \
-  --output_dir=outputs/train/sarm_single \
+  --rename_map='{"observation.images.wrist": "observation.images.left_wrist_0_rgb", "observation.images.context": "observation.images.base_0_rgb"}' \
+  --policy.empty_cameras=1 \
   --batch_size=1 \
   --steps=5000 \
   --save_checkpoint=true \
   --save_freq=250 \
   --wandb.enable=true \
-  --wandb.project=sarm
+  --wandb.project=pi05 \
+  --output_dir=outputs/train/pi05_trained
 ```
 
 
